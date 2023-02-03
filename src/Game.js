@@ -23,6 +23,7 @@ class Game {
     this.track = [];
     keyboard.a = () => this.hero.moveLeft();
     keyboard.d = () => this.hero.moveRight();
+    // keyboard.q = () => this.boomerang.fly();
     this.regenerateTrack();
   }
 
@@ -30,14 +31,17 @@ class Game {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
     this.track = new Array(this.trackLength).fill(' ');
+    setInterval(() => {
+      this.track[this.enemy.position] = this.enemy.skin;
+    }, 1000);
     this.track[this.enemy.position] = this.enemy.skin;
-    this.track[this.boomerang.position] = this.boomerang.skin;
     this.track[this.hero.position] = this.hero.skin;
+    this.track[this.boomerang.position] = this.boomerang.skin;
   }
 
   check(name) {
     if (this.hero.position === this.enemy.position) {
-      fs.writeFileSync(`${__dirname}/scores/${name}`, `${score}${EOL}`);
+      fs.appendFileSync(`${__dirname}/scores/${name}`, `${score}${EOL}`);
       this.hero.die();
     }
     if (
@@ -48,6 +52,9 @@ class Game {
       score += 100;
       this.enemy.die();
     }
+    if (this.boomerang.count < 10) this.boomerang.moveRight();
+    if (this.boomerang.count >= 10) this.boomerang.moveLeft();
+    if (this.boomerang.position <= this.hero.position) this.boomerang.count = 0;
   }
 
   play(name) {
@@ -55,11 +62,12 @@ class Game {
       // Let's play!
       this.check(name);
       this.enemy.moveLeft();
-      this.boomerang.moveRight();
       this.regenerateTrack();
+      // this.hero.attack();
+      // this.boomerang.fly();
       this.view.render(this.track);
       console.log(`Score: ${score}`);
-    }, 100);
+    }, 50);
   }
 }
 

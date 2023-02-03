@@ -1,11 +1,11 @@
 // Бумеранг является оружием.
 // В дальнейшем можно добавить другое оружие.
 // Тогда можно будет создать класс Weapon и воспользоваться наследованием!
-const waitSync = require('wait-sync');
 class Boomerang {
   constructor() {
     this.skin = '🌀';
-    this.position = 0;
+    this.count = 0;
+    this.position = 1;
   }
 
   fly() {
@@ -20,7 +20,7 @@ class Boomerang {
   moveRight() {
     // Идём вправо.
     this.position += 1;
+    this.count += 1;
   }
 }
-
 module.exports = Boomerang;
