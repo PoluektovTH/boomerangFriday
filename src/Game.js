@@ -22,10 +22,10 @@ class Game {
     this.enemy1 = new Enemy();
     this.enemy2 = new Enemy();
     this.view = new View();
-    this.field = [];
     this.track = [];
     this.track1 = [];
     this.track2 = [];
+    this.field = [];
     keyboard.a = () => this.hero.moveLeft();
     keyboard.d = () => this.hero.moveRight();
     keyboard.w = () => this.hero.moveUp();
@@ -37,14 +37,20 @@ class Game {
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.field = [this.track = new Array(this.trackLength).fill(' ');
-    this.track[this.enemy.position] = this.enemy.skin;
-    this.track[this.hero.position] = this.hero.skin;
-    this.track[this.boomerang.position] = this.boomerang.skin;
+    this.track = new Array(this.trackLength).fill(' ');
     this.track1 = new Array(this.trackLength).fill(' ');
-    this.track1[this.enemy1.position] = this.enemy1.skin;
     this.track2 = new Array(this.trackLength).fill(' ');
-    this.track2[this.enemy2.position] = this.enemy2.skin;]
+    this.field = [this.track1, this.track, this.track2];
+    // this.track[this.enemy.position] = this.enemy.skin;
+    // this.track[this.boomerang.position] = this.boomerang.skin;
+    // this.track1[this.enemy1.position] = this.enemy1.skin;
+    // this.track2[this.enemy2.position] = this.enemy2.skin;
+    this.field[this.hero.trackP][this.hero.position] = this.hero.skin;
+    this.field[this.enemy1.trackPe][this.enemy1.position] = this.enemy1.skin;
+    this.field[this.enemy.trackPe][this.enemy.position] = this.enemy.skin;
+    this.field[this.enemy2.trackPe][this.enemy2.position] = this.enemy2.skin;
+    this.field[this.boomerang.trackPb][this.boomerang.position] =
+      this.boomerang.skin;
   }
 
   check(name) {
@@ -94,9 +100,9 @@ class Game {
       this.regenerateTrack();
       // this.hero.attack();
       // this.boomerang.fly();
-      this.view.render(this.track, this.track1, this.track2);
+      this.view.render(this.field);
       console.log(`Score: ${score}`);
-    }, 50);
+    }, 20);
   }
 }
 

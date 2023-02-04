@@ -8,27 +8,10 @@
 //   waitSync(1);
 //   console.clear();
 // }
-const keypress = require('keypress');
-const Hero = require('./src/game-models/Hero');
-function runInteractiveConsole() {
-  const hero1 = new Hero();
-  const keyboard = {
-    a: () => console.log(hero1.moveLeft()),
-    d: () => console.log(hero1.moveRight()),
-  };
-  keypress(process.stdin);
-  process.stdin.on('keypress', (ch, key) => {
-    if (key) {
-      // Вызывает команду, соответствующую нажатой кнопке.
-      if (key.name in keyboard) {
-        keyboard[key.name]();
-      }
-      // Прерывание программы.
-      if (key.ctrl && key.name === 'c') {
-        process.exit();
-      }
-    }
-  });
-  process.stdin.setRawMode(true);
-}
-runInteractiveConsole();
+const { EOL } = require('os');
+
+const arr1 = [1, 2, 3, 4];
+const arr2 = [5, 6, 7, 8];
+const arr3 = [11, 12, 23, 45];
+const arr4 = [arr2, arr1, arr3];
+console.log(arr4.map((el) => el.join('')).join(EOL));

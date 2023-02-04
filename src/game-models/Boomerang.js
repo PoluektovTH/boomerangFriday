@@ -6,12 +6,14 @@ class Boomerang {
     this.skin = '🌀';
     this.count = 0;
     this.position = 1;
+    this.trackPb = 1;
   }
 
   fly() {
     this.moveRight();
     this.moveLeft();
-  }z
+  }
+
   moveLeft() {
     // Идём влево.
     this.position -= 1;
