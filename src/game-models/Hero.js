@@ -1,5 +1,6 @@
 // Наш герой.
 
+const clc = require('cli-color');
 const Boomerang = require('./Boomerang');
 
 class Hero {
@@ -39,7 +40,7 @@ class Hero {
 
   die() {
     this.skin = '💀';
-    console.log('YOU ARE DEAD!💀');
+    console.log(clc.red('YOU ARE DEAD!💀'));
     process.exit();
   }
 }

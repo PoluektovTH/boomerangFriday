@@ -7,6 +7,7 @@ const Enemy = require('./game-models/Enemy');
 const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
 const fs = require('fs');
+const clc = require('cli-color');
 const keyboard = require('./keyboard');
 const { EOL } = require('os');
 let score = 0;
@@ -165,9 +166,11 @@ class Game {
       this.view.render(this.field, this.downBorder, this.upBorder, time, score);
       console.log(`Score: ${score}`);
       console.log(`Time passed: ${time.toFixed(1)}`);
-      if (time >= 5) {
+      if (time >= 30) {
         console.log(
-          `${' '.repeat(30)}Победа!\n ${' '.repeat(25)}Твои очки: ${score}`
+          `${' '.repeat(30)}${clc.yellowBright('Победа!')}
+          ${' '.repeat(17)}Твои очки: ${clc.yellow(score)}
+          ${' '.repeat(13)}Монстров размотано: ${clc.red(score / 100)}`
         );
         process.exit();
       }

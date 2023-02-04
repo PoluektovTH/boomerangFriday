@@ -4,6 +4,8 @@
   "description": "Настало время разрабатывать лучшие в мире игры!",
   "main": "run.js",
   "dependencies": {
+    "chalk": "^5.2.0",
+    "cli-color": "^2.0.3",
     "find-exec": "^1.0.2",
     "keypress": "^0.2.1",
     "pg": "^8.7.3",
