@@ -96,7 +96,10 @@ class Game {
       this.hero.position <= 0 ||
       this.hero.position > this.trackLength
     ) {
-      fs.appendFileSync(`${__dirname}/scores/${name}`, `${score}${EOL}`);
+      fs.appendFileSync(
+        `${__dirname}/scores/${name}`,
+        `${score}, ${time.toFixed(1)}${EOL}`
+      );
       this.hero.die();
     }
     if (
