@@ -3,7 +3,7 @@ class Enemy {
   constructor() {
     this.generateSkin();
     this.position = Math.floor(Math.random() * (60 - 50) + 50);
-    this.trackPe = (Math.random() * 3).toFixed(0);
+    this.trackPe = Math.floor(Math.random() * 3);
   }
 
   generateSkin() {
@@ -26,13 +26,13 @@ class Enemy {
 
   moveLeft() {
     // Идём влево.
-    this.position -= 2;
+    this.position -= 1;
   }
 
   die() {
     this.generateSkin();
     this.position = Math.floor(Math.random() * (60 - 50) + 50);
-    this.trackPe = Math.floor(Math.random() * 2);
+    this.trackPe = Math.floor(Math.random() * 3);
     console.log('Enemy is dead!');
   }
 }

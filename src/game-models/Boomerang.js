@@ -5,13 +5,22 @@ class Boomerang {
   constructor() {
     this.skin = '🌀';
     this.count = 0;
-    this.position = 1;
+    this.position = -1;
     this.trackPb = 1;
   }
 
-  fly() {
-    this.moveRight();
-    this.moveLeft();
+  fly(pos, track) {
+    this.trackPb = track;
+    this.position = pos;
+    const int = setInterval(() => {
+      if (this.count < 10) this.moveRight();
+      if (this.count >= 10) this.moveLeft();
+      if (this.position === pos) {
+        this.position = pos;
+        this.count = 0;
+        clearInterval(int);
+      }
+    }, 100);
   }
 
   moveLeft() {
