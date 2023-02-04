@@ -19,6 +19,10 @@ class Hero {
     this.position += 1;
   }
 
+  moveUp() {}
+
+  moveDown() {}
+
   attack() {
     // Атакуем.
     this.boomerang.fly();

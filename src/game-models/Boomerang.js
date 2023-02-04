@@ -11,7 +11,7 @@ class Boomerang {
   fly() {
     this.moveRight();
     this.moveLeft();
-  }
+  }z
   moveLeft() {
     // Идём влево.
     this.position -= 1;

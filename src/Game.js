@@ -19,10 +19,17 @@ class Game {
     this.boomerang = new Boomerang();
     this.hero = new Hero(); // Герою можно аргументом передать бумеранг.
     this.enemy = new Enemy();
+    this.enemy1 = new Enemy();
+    this.enemy2 = new Enemy();
     this.view = new View();
+    this.field = [];
     this.track = [];
+    this.track1 = [];
+    this.track2 = [];
     keyboard.a = () => this.hero.moveLeft();
     keyboard.d = () => this.hero.moveRight();
+    keyboard.w = () => this.hero.moveUp();
+    keyboard.s = () => this.hero.moveDown();
     // keyboard.q = () => this.boomerang.fly();
     this.regenerateTrack();
   }
@@ -30,13 +37,14 @@ class Game {
   regenerateTrack() {
     // Сборка всего необходимого (герой, враг(и), оружие)
     // в единую структуру данных
-    this.track = new Array(this.trackLength).fill(' ');
-    setInterval(() => {
-      this.track[this.enemy.position] = this.enemy.skin;
-    }, 1000);
+    this.field = [this.track = new Array(this.trackLength).fill(' ');
     this.track[this.enemy.position] = this.enemy.skin;
     this.track[this.hero.position] = this.hero.skin;
     this.track[this.boomerang.position] = this.boomerang.skin;
+    this.track1 = new Array(this.trackLength).fill(' ');
+    this.track1[this.enemy1.position] = this.enemy1.skin;
+    this.track2 = new Array(this.trackLength).fill(' ');
+    this.track2[this.enemy2.position] = this.enemy2.skin;]
   }
 
   check(name) {
@@ -47,10 +55,29 @@ class Game {
     if (
       this.enemy.position === this.boomerang.position ||
       this.boomerang.position - 1 === this.enemy.position ||
-      this.boomerang.position + 1 === this.enemy.position
+      this.boomerang.position + 1 === this.enemy.position ||
+      this.enemy.position === 0
     ) {
       score += 100;
       this.enemy.die();
+    }
+    if (
+      this.enemy1.position === this.boomerang.position ||
+      this.boomerang.position - 1 === this.enemy1.position ||
+      this.boomerang.position + 1 === this.enemy1.position ||
+      this.enemy1.position === 0
+    ) {
+      score += 100;
+      this.enemy1.die();
+    }
+    if (
+      this.enemy2.position === this.boomerang.position ||
+      this.boomerang.position - 1 === this.enemy2.position ||
+      this.boomerang.position + 1 === this.enemy2.position ||
+      this.enemy2.position === 0
+    ) {
+      score += 100;
+      this.enemy2.die();
     }
     if (this.boomerang.count < 10) this.boomerang.moveRight();
     if (this.boomerang.count >= 10) this.boomerang.moveLeft();
@@ -62,10 +89,12 @@ class Game {
       // Let's play!
       this.check(name);
       this.enemy.moveLeft();
+      this.enemy1.moveLeft();
+      this.enemy2.moveLeft();
       this.regenerateTrack();
       // this.hero.attack();
       // this.boomerang.fly();
-      this.view.render(this.track);
+      this.view.render(this.track, this.track1, this.track2);
       console.log(`Score: ${score}`);
     }, 50);
   }
