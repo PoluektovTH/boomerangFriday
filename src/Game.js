@@ -10,6 +10,7 @@ const fs = require('fs');
 const keyboard = require('./keyboard');
 const { EOL } = require('os');
 let score = 0;
+let time = 0;
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
 
@@ -21,12 +22,16 @@ class Game {
     this.enemy = new Enemy();
     this.enemy1 = new Enemy();
     this.enemy2 = new Enemy();
+    this.enemy3 = new Enemy();
+    this.enemy4 = new Enemy();
     this.view = new View();
     this.upBorder = [];
     this.downBorder = [];
     this.track = [];
     this.track1 = [];
     this.track2 = [];
+    this.track3 = [];
+    this.track4 = [];
     this.field = [];
     keyboard.a = () => this.hero.moveLeft();
     keyboard.d = () => this.hero.moveRight();
@@ -46,23 +51,31 @@ class Game {
     this.track = new Array(this.trackLength).fill(' ');
     this.track1 = new Array(this.trackLength).fill(' ');
     this.track2 = new Array(this.trackLength).fill(' ');
+    this.track3 = new Array(this.trackLength).fill(' ');
+    this.track4 = new Array(this.trackLength).fill(' ');
     this.track.unshift('🔥');
     this.track2.unshift('🔥');
     this.track1.unshift('🔥');
+    this.track3.unshift('🔥');
+    this.track4.unshift('🔥');
     this.track.push('🔥');
     this.track2.push('🔥');
     this.track1.push('🔥');
-    this.field = [this.track1, this.track, this.track2];
-    // this.track[this.enemy.position] = this.enemy.skin;
-    // this.track[this.boomerang.position] = this.boomerang.skin;
-    // this.track1[this.enemy1.position] = this.enemy1.skin;
-    // this.track2[this.enemy2.position] = this.enemy2.skin;
-    // this.hero.boomerang.position = this.hero.position;
-    // this.hero.boomerang.trackPb = this.hero.trackP;
+    this.track3.push('🔥');
+    this.track4.push('🔥');
+    this.field = [
+      this.track1,
+      this.track,
+      this.track2,
+      this.track3,
+      this.track4,
+    ];
     this.field[this.hero.trackP][this.hero.position] = this.hero.skin;
     this.field[this.enemy1.trackPe][this.enemy1.position] = this.enemy1.skin;
     this.field[this.enemy.trackPe][this.enemy.position] = this.enemy.skin;
     this.field[this.enemy2.trackPe][this.enemy2.position] = this.enemy2.skin;
+    this.field[this.enemy3.trackPe][this.enemy3.position] = this.enemy3.skin;
+    this.field[this.enemy4.trackPe][this.enemy4.position] = this.enemy4.skin;
     this.field[this.boomerang.trackPb][this.boomerang.position] =
       this.boomerang.skin;
   }
@@ -75,6 +88,10 @@ class Game {
         this.hero.trackP === this.enemy1.trackPe) ||
       (this.hero.position === this.enemy2.position &&
         this.hero.trackP === this.enemy2.trackPe) ||
+      (this.hero.position === this.enemy3.position &&
+        this.hero.trackP === this.enemy3.trackPe) ||
+      (this.hero.position === this.enemy4.position &&
+        this.hero.trackP === this.enemy4.trackPe) ||
       this.hero.position <= 0 ||
       this.hero.position > this.trackLength
     ) {
@@ -108,26 +125,52 @@ class Game {
       score += 100;
       this.enemy2.die();
     }
+    if (
+      (this.enemy3.position === this.boomerang.position &&
+        this.enemy3.trackPe === this.boomerang.trackPb) ||
+      (this.boomerang.position + 1 === this.enemy3.position &&
+        this.enemy3.trackPe === this.boomerang.trackPb)
+    ) {
+      score += 100;
+      this.enemy3.die();
+    }
+    if (
+      (this.enemy4.position === this.boomerang.position &&
+        this.enemy4.trackPe === this.boomerang.trackPb) ||
+      (this.boomerang.position + 1 === this.enemy4.position &&
+        this.enemy4.trackPe === this.boomerang.trackPb)
+    ) {
+      score += 100;
+      this.enemy4.die();
+    }
     if (this.enemy1.position === 0) this.enemy1.die();
     if (this.enemy2.position === 0) this.enemy2.die();
+    if (this.enemy3.position === 0) this.enemy3.die();
+    if (this.enemy4.position === 0) this.enemy4.die();
     if (this.enemy.position === 0) this.enemy.die();
-    // if (this.boomerang.count < 10) this.boomerang.moveRight();
-    // if (this.boomerang.count >= 10) this.boomerang.moveLeft();
-    // if (this.boomerang.position <= this.hero.position) this.boomerang.count = 0;
   }
 
   play(name) {
     setInterval(() => {
-      // Let's play!
+      time += (time + 50) / 1000;
       this.check(name);
       this.enemy.moveLeft();
       this.enemy1.moveLeft();
       this.enemy2.moveLeft();
+      this.enemy3.moveLeft();
+      this.enemy4.moveLeft();
       this.regenerateTrack();
       // this.hero.attack();
       // this.boomerang.fly();
-      this.view.render(this.field, this.downBorder, this.upBorder);
+      this.view.render(this.field, this.downBorder, this.upBorder, time, score);
       console.log(`Score: ${score}`);
+      console.log(`Time passed: ${time.toFixed(1)}`);
+      if (time >= 5) {
+        console.log(
+          `${' '.repeat(30)}Победа!\n ${' '.repeat(25)}Твои очки: ${score}`
+        );
+        process.exit();
+      }
     }, 20);
   }
 }

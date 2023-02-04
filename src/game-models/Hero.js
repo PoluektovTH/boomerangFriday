@@ -4,7 +4,7 @@ const Boomerang = require('./Boomerang');
 
 class Hero {
   constructor({ position } = {}) {
-    this.skin = '🤠'; // можете использовать любые emoji '💃'
+    this.skin = '🐔'; // можете использовать любые emoji '💃'
     this.position = position ?? 1;
     this.trackP = 1;
     this.boomerang = new Boomerang();
@@ -27,7 +27,7 @@ class Hero {
   }
 
   moveDown() {
-    if (this.trackP < 2) {
+    if (this.trackP < 4) {
       this.trackP += 1;
     }
   }

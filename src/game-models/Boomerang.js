@@ -3,13 +3,14 @@
 // Тогда можно будет создать класс Weapon и воспользоваться наследованием!
 class Boomerang {
   constructor() {
-    this.skin = '🌀';
+    this.skin = '🥚';
     this.count = 0;
     this.position = -1;
     this.trackPb = 1;
   }
 
   fly(pos, track) {
+    this.count = 0;
     this.trackPb = track;
     this.position = pos;
     const int = setInterval(() => {

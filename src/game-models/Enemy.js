@@ -2,8 +2,8 @@
 class Enemy {
   constructor() {
     this.generateSkin();
-    this.position = Math.floor(Math.random() * (60 - 50) + 50);
-    this.trackPe = Math.floor(Math.random() * 3);
+    this.position = Math.floor(Math.random() * (60 - 55) + 55);
+    this.trackPe = Math.floor(Math.random() * 5);
   }
 
   generateSkin() {
@@ -32,7 +32,7 @@ class Enemy {
   die() {
     this.generateSkin();
     this.position = Math.floor(Math.random() * (60 - 50) + 50);
-    this.trackPe = Math.floor(Math.random() * 3);
+    this.trackPe = Math.floor(Math.random() * 5);
     console.log('Enemy is dead!');
   }
 }

@@ -2,8 +2,8 @@
 
 const { EOL } = require('os');
 class View {
-  render(field, down, up) {
-    const yourTeamName = 'Elbrus';
+  render(field, down, up, time, score) {
+    const yourTeamName = 'DADI';
     // Тут всё рисуем.
     console.clear();
     console.log('\n');
@@ -14,7 +14,7 @@ class View {
     console.log(field.map((el) => el.join('')).join(EOL));
     console.log(down.join(''));
     console.log('\n');
-    console.log(`Created by "${yourTeamName}" with love`);
+    console.log(`Produced by: "${yourTeamName}"`);
   }
 }
 
