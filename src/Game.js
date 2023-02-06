@@ -1,17 +1,24 @@
+/* eslint-disable camelcase */
 // Импортируем всё необходимое.
 // Или можно не импортировать,
 // а передавать все нужные объекты прямо из run.js при инициализации new Game().
 
+const fs = require('fs');
+const { EOL } = require('os');
 const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
 const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
+
 const fs = require('fs');
 const clc = require('cli-color');
 const keyboard = require('./keyboard');
 const { EOL } = require('os');
 let score = 0;
 let time = 0;
+const keyboard = require('./keyboard');
+const { Gamer, sequelize } = require('../db/models');
+
 // Основной класс игры.
 // Тут будут все настройки, проверки, запуск.
 
@@ -34,6 +41,8 @@ class Game {
     this.track3 = [];
     this.track4 = [];
     this.field = [];
+    this.score = 0; // add this.score
+
     keyboard.a = () => this.hero.moveLeft();
     keyboard.d = () => this.hero.moveRight();
     keyboard.w = () => this.hero.moveUp();
@@ -82,6 +91,7 @@ class Game {
   }
 
   check(name) {
+
     if (
       (this.hero.position === this.enemy.position &&
         this.hero.trackP === this.enemy.trackPe) ||
@@ -95,20 +105,20 @@ class Game {
         this.hero.trackP === this.enemy4.trackPe) ||
       this.hero.position <= 0 ||
       this.hero.position > this.trackLength
-    ) {
-      fs.appendFileSync(
-        `${__dirname}/scores/${name}`,
-        `${score}${EOL}${time.toFixed(1)}${EOL}`
-      );
-      this.hero.die();
+    )
+    if (this.hero.position === this.enemy.position) {
+      fs.writeFileSync(`${__dirname}/scores/${name}`, `${this.score}${EOL}`);
+      this.addGamerName(name, this.score).then(() => this.hero.die());
+
     }
+
     if (
       (this.enemy.position === this.boomerang.position &&
         this.enemy.trackPe === this.boomerang.trackPb) ||
       (this.boomerang.position + 1 === this.enemy.position &&
         this.enemy.trackPe === this.boomerang.trackPb)
     ) {
-      score += 100;
+      this.score += 100; // add this.score
       this.enemy.die();
     }
     if (
@@ -154,6 +164,25 @@ class Game {
     if (this.enemy.position === 0) this.enemy.die();
   }
 
+  async addGamerName(name) {
+    try {
+      const gamerData = await Gamer.create(
+        {
+          name,
+          score: this.score,
+        },
+        { logging: false }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // async addGamerName(name) {
+  //   const data = await Boomerang_scores.create({ name: `${name}`, score: `${numOfScore}`}); // доделать
+  //   sequelize.close();
+  // }
+
   play(name) {
     setInterval(() => {
       time += (time + 50) / 1000;
@@ -178,6 +207,7 @@ class Game {
         process.exit();
       }
     }, 20);
+
   }
 }
 
