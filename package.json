@@ -4,12 +4,17 @@
   "description": "Настало время разрабатывать лучшие в мире игры!",
   "main": "run.js",
   "dependencies": {
+    "chalk": "^5.2.0",
+    "cli-color": "^2.0.3",
     "find-exec": "^1.0.2",
     "keypress": "^0.2.1",
-    "pg": "^8.7.3",
+    "pg": "^8.9.0",
     "pg-hstore": "^2.3.4",
     "play-sound": "^1.1.5",
-    "sequelize": "^6.21.0"
+    "sequelize": "^6.28.0",
+    "sequelize-cli": "^6.6.0",
+    "sync-rest-client": "^1.0.3",
+    "wait-sync": "^1.0.1"
   },
   "devDependencies": {
     "eslint": "^8.18.0",
