@@ -32,3 +32,46 @@ function runInteractiveConsole() {
   process.stdin.setRawMode(true);
 }
 runInteractiveConsole();
+
+
+check() {
+  if (this.hero.position !== this.hero.boomerang.position) {
+    this.hero.boomerang.fly();
+  }
+  if (this.hero.boomerang.position <= this.hero.position) {
+    this.hero.boomerang.position = undefined;
+    this.hero.boomerang.direction = 'right';
+  }
+  if (this.hero.position === this.enemy.position) {
+    this.hero.dieHero();
+    console.clear();
+    // console.log(this.count);
+    // console.log(this.timer);
+    // console.log(this.name);
+    const addUser = async ()=>{
+      try {
+        await User.bulkCreate({nickname:this.name, scores:this.count})
+      } catch (err) {
+        console.log(err);
+      }
+    } 
+    addUser()
+    process.exit();
+  }
+  if (this.hero.boomerang.position >= this.enemy.position) {
+    this.enemy.dieEnemy();
+    this.count += 1;
+    this.hero.boomerang.direction = 'left';
+    this.enemy = new Enemy(this.trackLength);
+  }
+  if (this.hero.boomerang.position === this.trackLength - 1) {
+    this.hero.boomerang.direction = 'left';
+  }
+
+  if(this.count >= 5) {
+    this.hero.boomerang.skin = '🌪';
+    }
+    if(this.count >= 10) {
+    this.hero.skin = '💃';
+    } 
+}
