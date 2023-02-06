@@ -3,32 +3,39 @@
 // Тогда можно будет создать класс Weapon и воспользоваться наследованием!
 
 class Boomerang {
-  constructor() {
+  constructor(position) {
     this.skin = "🌀";
-    this.position = 1;
+    this.position = position;
   }
 
   fly() {
-    this.moveRight();
+    let right = setInterval(() => {
+      this.moveRight();
+    }, 100);
 
-    setInterval(() => {
-      this.moveLeft();
-    }, 2000);
+    setTimeout(() => {
+      {
+        clearInterval(right), this.moveLeft();
+      }
+    }, 1000);
   }
 
   moveLeft() {
     // Идём влево.
-
-    this.position -= 2;
+    let left = setInterval(() => {
+      this.position -= 1;
+    }, 100);
+    setTimeout(() => {
+      clearInterval(left);
+    }, 1000);
   }
   moveRight() {
     // Идём вправо.
+
     this.position += 1;
   }
   die() {
     this.position = "?";
-
-    this.position = 0;
   }
 }
 

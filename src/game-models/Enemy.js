@@ -3,7 +3,7 @@
 class Enemy {
   constructor() {
     this.generateSkin();
-    this.position = 30;
+    this.position = 50;
   }
 
   generateSkin() {

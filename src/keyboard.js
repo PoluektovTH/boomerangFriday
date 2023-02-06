@@ -7,18 +7,17 @@ const keypress = require("keypress");
 // Управление.
 // Настроим соответствия нажатий на клавиши и действий в игре.
 
-const keyboard = {
-  d: () => console.log("q"),
-  a: () => console.log("w"),
-  e: () => console.log("e"),
-  r: () => console.log("r"),
-  t: () => console.log("t"),
-  y: () => console.log("y"),
-};
-
 // Какая-то функция.
 
-function runInteractiveConsole() {
+function runInteractiveConsole(x) {
+  const keyboard = {
+    d: () => x.moveRight(),
+    a: () => x.moveLeft(),
+    q: () => x.attack(),
+    r: () => console.log("r"),
+    t: () => console.log("t"),
+    y: () => console.log("y"),
+  };
   keypress(process.stdin);
   process.stdin.on("keypress", (ch, key) => {
     if (key) {
@@ -37,6 +36,4 @@ function runInteractiveConsole() {
 
 // Давай попробуем запустить этот скрипт!
 
-runInteractiveConsole();
-
-module.exports = keyboard;
+module.exports = { runInteractiveConsole };
