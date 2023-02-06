@@ -3,20 +3,15 @@
 // Или можно не импортировать,
 // а передавать все нужные объекты прямо из run.js при инициализации new Game().
 
-const fs = require('fs');
+const fs = require('fs').promises;
 const { EOL } = require('os');
 const Hero = require('./game-models/Hero');
 const Enemy = require('./game-models/Enemy');
 const Boomerang = require('./game-models/Boomerang');
 const View = require('./View');
-
-const fs = require('fs');
 const clc = require('cli-color');
 const keyboard = require('./keyboard');
-const { EOL } = require('os');
-let score = 0;
 let time = 0;
-const keyboard = require('./keyboard');
 const { Gamer, sequelize } = require('../db/models');
 
 // Основной класс игры.
@@ -42,7 +37,6 @@ class Game {
     this.track4 = [];
     this.field = [];
     this.score = 0; // add this.score
-
     keyboard.a = () => this.hero.moveLeft();
     keyboard.d = () => this.hero.moveRight();
     keyboard.w = () => this.hero.moveUp();
@@ -91,7 +85,6 @@ class Game {
   }
 
   check(name) {
-
     if (
       (this.hero.position === this.enemy.position &&
         this.hero.trackP === this.enemy.trackPe) ||
@@ -105,11 +98,9 @@ class Game {
         this.hero.trackP === this.enemy4.trackPe) ||
       this.hero.position <= 0 ||
       this.hero.position > this.trackLength
-    )
-    if (this.hero.position === this.enemy.position) {
-      fs.writeFileSync(`${__dirname}/scores/${name}`, `${this.score}${EOL}`);
+    ) {
+      fs.writeFile(`${__dirname}/scores/${name}`, `${this.score}${EOL}`);
       this.addGamerName(name, this.score).then(() => this.hero.die());
-
     }
 
     if (
@@ -127,7 +118,7 @@ class Game {
       (this.boomerang.position + 1 === this.enemy1.position &&
         this.enemy1.trackPe === this.boomerang.trackPb)
     ) {
-      score += 100;
+      this.score += 100;
       this.enemy1.die();
     }
     if (
@@ -136,7 +127,7 @@ class Game {
       (this.boomerang.position + 1 === this.enemy2.position &&
         this.enemy2.trackPe === this.boomerang.trackPb)
     ) {
-      score += 100;
+      this.score += 100;
       this.enemy2.die();
     }
     if (
@@ -145,7 +136,7 @@ class Game {
       (this.boomerang.position + 1 === this.enemy3.position &&
         this.enemy3.trackPe === this.boomerang.trackPb)
     ) {
-      score += 100;
+      this.score += 100;
       this.enemy3.die();
     }
     if (
@@ -154,7 +145,7 @@ class Game {
       (this.boomerang.position + 1 === this.enemy4.position &&
         this.enemy4.trackPe === this.boomerang.trackPb)
     ) {
-      score += 100;
+      this.score += 100;
       this.enemy4.die();
     }
     if (this.enemy1.position === 0) this.enemy1.die();
@@ -178,11 +169,6 @@ class Game {
     }
   }
 
-  // async addGamerName(name) {
-  //   const data = await Boomerang_scores.create({ name: `${name}`, score: `${numOfScore}`}); // доделать
-  //   sequelize.close();
-  // }
-
   play(name) {
     setInterval(() => {
       time += (time + 50) / 1000;
@@ -193,21 +179,24 @@ class Game {
       this.enemy3.moveLeft();
       this.enemy4.moveLeft();
       this.regenerateTrack();
-      // this.hero.attack();
-      // this.boomerang.fly();
-      this.view.render(this.field, this.downBorder, this.upBorder, time, score);
-      console.log(`Score: ${score}`);
+      this.view.render(
+        this.field,
+        this.downBorder,
+        this.upBorder,
+        time,
+        this.score
+      );
+      console.log(`Score: ${this.score}`);
       console.log(`Time passed: ${time.toFixed(1)}`);
       if (time >= 30) {
         console.log(
           `${' '.repeat(30)}${clc.yellowBright('Победа!')}
-          ${' '.repeat(17)}Твои очки: ${clc.yellow(score)}
-          ${' '.repeat(13)}Монстров размотано: ${clc.red(score / 100)}`
+          ${' '.repeat(17)}Твои очки: ${clc.yellow(this.score)}
+          ${' '.repeat(13)}Монстров размотано: ${clc.red(this.score / 100)}`
         );
         process.exit();
       }
     }, 20);
-
   }
 }
 
