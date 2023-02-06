@@ -2,7 +2,7 @@
 
 const { EOL } = require('os');
 class View {
-  render(field, down, up, time, score) {
+  render(field, down, up) {
     const yourTeamName = 'DADI';
     // Тут всё рисуем.
     console.clear();

@@ -98,7 +98,7 @@ class Game {
     ) {
       fs.appendFileSync(
         `${__dirname}/scores/${name}`,
-        `${score}, ${time.toFixed(1)}${EOL}`
+        `${score}${EOL}${time.toFixed(1)}${EOL}`
       );
       this.hero.die();
     }
